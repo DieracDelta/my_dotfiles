@@ -10,7 +10,7 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-PATH=$PATH:/usr/sbin:~/go/bin
+PATH=$PATH:/usr/sbin:~/go/bin:/opt/cuda/bin/
 
 function scp_mit {
 	for var in "$@"
@@ -54,3 +54,6 @@ alias spoon="echo ursad"
 #alias fuck="rm bruh.txt && go test -run TestBasic3A >> bruh.txt && vim bruh.txt"
 GOPATH=~/school/6.824/lab1 && export GOPATH
 alias config='/usr/bin/git --git-dir=/home/dieraca/.cfg/ --work-tree=/home/dieraca'
+alias ram2app=' ps aux  | awk `{print $6/1024 " MB\t\t" $11}`  | sort -n'
+alias allfx=' gcc alienfx.c -ggdb `pkg-config --libs --cflags libusb-1.0`'
+alias compdwm='sudo make clean && sudo make ALIENX=1 && sudo make ALIENFX=1 install'
