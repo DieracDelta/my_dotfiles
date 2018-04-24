@@ -57,3 +57,6 @@ alias config='/usr/bin/git --git-dir=/home/dieraca/.cfg/ --work-tree=/home/diera
 alias ram2app=' ps aux  | awk `{print $6/1024 " MB\t\t" $11}`  | sort -n'
 alias allfx=' gcc alienfx.c -ggdb `pkg-config --libs --cflags libusb-1.0`'
 alias compdwm='sudo make clean && sudo make ALIENX=1 && sudo make ALIENFX=1 install'
+alias fixnw='sudo nmcli device wifi connect MIT'
+alias fixtime='sudo rc-service ntp-client start'
+source ~/.cargo/env
