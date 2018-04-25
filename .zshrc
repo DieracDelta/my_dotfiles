@@ -16,37 +16,32 @@ PATH=$PATH:/usr/sbin:~/go/bin:/opt/cuda/bin/
 KERBEROS="jrestivo"
 
 function scp_mit {
-  ssh -f -N -l $KERBEROS athena.dialup.mit.edu 
-  # pid=$!
+  ssh -f -N -l $KERBEROS athena.dialup.mit.edu
   ssh $KERBEROS@athena.dialup.mit.edu "mkdir printer_files"
-	scp $@ $KERBEROS@athena.dialup.mit.edu:/mit/$KERBEROS/printer_files/
   cmd=""
-	for var in "$@"
-	do
-    cmd+="lpr -P mitprint -o sides=two-sided-long-edge ~/printer_files/"
-    cmd+=$var
-    cmd+="; "
-	done
+  for var in "$@"
+  do
+      cmd+="lpr -P mitprint -o sides=two-sided-long-edge ~/printer_files/"
+      cmd+=$(basename $var)
+      cmd+="; "
+  done
+	scp $@ $KERBEROS@athena.dialup.mit.edu:/mit/$KERBEROS/printer_files/
 	ssh $KERBEROS@athena.dialup.mit.edu $cmd " rm -dr printer_files"
-  # pkill $pid
 }
 
-function scp_mit_single_sided {
-    ssh -f -N -l $KERBEROS athena.dialup.mit.edu 
-    # pid=$!
+function scp_mit_single {
+    ssh -f -N -l $KERBEROS athena.dialup.mit.edu
     ssh $KERBEROS@athena.dialup.mit.edu "mkdir printer_files"
-	  scp $@ $KERBEROS@athena.dialup.mit.edu:/mit/$KERBEROS/printer_files/
     cmd=""
-	  for var in "$@"
-	  do
+    for var in "$@"
+    do
         cmd+="lpr -P mitprint ~/printer_files/"
-        cmd+=$var
+        cmd+=$(basename $var)
         cmd+="; "
-	  done
+    done
+	  scp $@ $KERBEROS@athena.dialup.mit.edu:/mit/$KERBEROS/printer_files/
 	  ssh $KERBEROS@athena.dialup.mit.edu $cmd " rm -dr printer_files"
-    # pkill $pid
 }
-
 
  alias asdf="ls"
  # for 6.858
