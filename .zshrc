@@ -14,11 +14,11 @@ source $ZSH/oh-my-zsh.sh
 PATH=$PATH:/usr/sbin:~/go/bin:/opt/cuda/bin/
 
 KERBEROS="jrestivo"
-function prep_server {
-    ssh $KERBEROS@athena.dialup.mit.edu "mkdir printer_files"
-}
 
-function scp_mit{
+function scp_mit {
+  ssh -f -N -l $KERBEROS athena.dialup.mit.edu 
+  # pid=$!
+  ssh $KERBEROS@athena.dialup.mit.edu "mkdir printer_files"
 	scp $@ $KERBEROS@athena.dialup.mit.edu:/mit/$KERBEROS/printer_files/
   cmd=""
 	for var in "$@"
@@ -27,11 +27,15 @@ function scp_mit{
     cmd+=$var
     cmd+="; "
 	done
-	ssh $KERBEROS@athena.dialup.mit.edu $cmd
+	ssh $KERBEROS@athena.dialup.mit.edu $cmd " rm -dr printer_files"
+  # pkill $pid
 }
 
 function scp_mit_single_sided {
-	  scp $@ $KERBEROS@athena.dialup.mit.edu:/mit/jrestivo/printer_files/
+    ssh -f -N -l $KERBEROS athena.dialup.mit.edu 
+    # pid=$!
+    ssh $KERBEROS@athena.dialup.mit.edu "mkdir printer_files"
+	  scp $@ $KERBEROS@athena.dialup.mit.edu:/mit/$KERBEROS/printer_files/
     cmd=""
 	  for var in "$@"
 	  do
@@ -39,8 +43,10 @@ function scp_mit_single_sided {
         cmd+=$var
         cmd+="; "
 	  done
-	  ssh $KERBEROS@athena.dialup.mit.edu $cmd
+	  ssh $KERBEROS@athena.dialup.mit.edu $cmd " rm -dr printer_files"
+    # pkill $pid
 }
+
 
  alias asdf="ls"
  # for 6.858
