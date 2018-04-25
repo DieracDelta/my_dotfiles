@@ -10,14 +10,36 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
+
 PATH=$PATH:/usr/sbin:~/go/bin:/opt/cuda/bin/
 
-function scp_mit {
+KERBEROS="jrestivo"
+function prep_server {
+    ssh $KERBEROS@athena.dialup.mit.edu "mkdir printer_files"
+}
+
+function scp_mit{
+	scp $@ $KERBEROS@athena.dialup.mit.edu:/mit/$KERBEROS/printer_files/
+  cmd=""
 	for var in "$@"
 	do
-		scp $var jrestivo@athena.dialup.mit.edu:/mit/jrestivo
-		ssh jrestivo@athena.dialup.mit.edu "source .bashrc && print_thing " $var
+    cmd+="lpr -P mitprint -o sides=two-sided-long-edge ~/printer_files/"
+    cmd+=$var
+    cmd+="; "
 	done
+	ssh $KERBEROS@athena.dialup.mit.edu $cmd
+}
+
+function scp_mit_single_sided {
+	  scp $@ $KERBEROS@athena.dialup.mit.edu:/mit/jrestivo/printer_files/
+    cmd=""
+	  for var in "$@"
+	  do
+        cmd+="lpr -P mitprint ~/printer_files/"
+        cmd+=$var
+        cmd+="; "
+	  done
+	  ssh $KERBEROS@athena.dialup.mit.edu $cmd
 }
 
  alias asdf="ls"
@@ -50,6 +72,7 @@ alias proj="xrandr --output HDMI-2 --auto"
 alias glog="git log --graph --pretty=format:'%h - %d %s (%cr) <%an>' | vim -R -c 'set filetype=git nowrap' -"
 alias pblue="sudo hciconfig hci0 up && sudo rfkill unblock bluetooth && bluetoothctl"
 eval "$(fasd --init auto)"
+
 alias spoon="echo ursad"
 #alias fuck="rm bruh.txt && go test -run TestBasic3A >> bruh.txt && vim bruh.txt"
 GOPATH=~/school/6.824/lab1 && export GOPATH
