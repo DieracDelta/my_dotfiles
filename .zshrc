@@ -15,6 +15,7 @@ PATH=$PATH:/usr/sbin:~/go/bin:/opt/cuda/bin/
 
 KERBEROS="jrestivo"
 
+# double sided
 function scp_mit {
   ssh -f -N -l $KERBEROS athena.dialup.mit.edu
   ssh $KERBEROS@athena.dialup.mit.edu "mkdir printer_files"
@@ -29,6 +30,7 @@ function scp_mit {
 	ssh $KERBEROS@athena.dialup.mit.edu $cmd " rm -dr printer_files"
 }
 
+# single sided (for musics)
 function scp_mit_single {
     ssh -f -N -l $KERBEROS athena.dialup.mit.edu
     ssh $KERBEROS@athena.dialup.mit.edu "mkdir printer_files"
@@ -41,6 +43,17 @@ function scp_mit_single {
     done
 	  scp $@ $KERBEROS@athena.dialup.mit.edu:/mit/$KERBEROS/printer_files/
 	  ssh $KERBEROS@athena.dialup.mit.edu $cmd " rm -dr printer_files"
+}
+
+# connect to input wifi
+function cw {
+    # if no args
+    if [ $# -eq 0 ]
+    then
+        sudo nmcli device wifi connect "MIT"
+    else
+        sudo nmcli device wifi connect $1
+    fi
 }
 
  alias asdf="ls"
