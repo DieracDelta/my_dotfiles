@@ -22,6 +22,7 @@ function scp_mit {
   cmd=""
   for var in "$@"
   do
+      #cmd+="lpr -P mitprint -U graceyin -o sides=two-sided-long-edge ~/printer_files/"
       cmd+="lpr -P mitprint -o sides=two-sided-long-edge ~/printer_files/"
       cmd+=$(basename $var)
       cmd+="; "
@@ -89,11 +90,15 @@ eval "$(fasd --init auto)"
 
 alias spoon="echo ursad"
 #alias fuck="rm bruh.txt && go test -run TestBasic3A >> bruh.txt && vim bruh.txt"
-GOPATH=~/school/6.824/lab1 && export GOPATH
+GOPATH=~/school/6.824/lab1:~/school/6.858/DuckDuckGo && export GOPATH
 alias config='/usr/bin/git --git-dir=/home/dieraca/.cfg/ --work-tree=/home/dieraca'
 alias ram2app=' ps aux  | awk `{print $6/1024 " MB\t\t" $11}`  | sort -n'
 alias allfx=' gcc alienfx.c -ggdb `pkg-config --libs --cflags libusb-1.0`'
 alias compdwm='sudo make clean && sudo make ALIENX=1 && sudo make ALIENFX=1 install'
 alias fixnw='sudo nmcli device wifi connect MIT'
 alias fixtime='sudo rc-service ntp-client start'
+alias cat='bat'
+alias update_that_shit='sudo emerge --ask --update --changed-use --deep @world'
+# note that in dwm the bindings are mod + (<>) to switch between monitors and mod + shift + (<>) to move currently selected app between monitors
+alias add_second_monitor='xrandr --auto --output HDMI-0 --mode 1920x1080 --left-of eDP-1-1'
 source ~/.cargo/env
